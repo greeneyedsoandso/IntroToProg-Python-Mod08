@@ -24,8 +24,44 @@ class Product:
         RRoot,1.1.2030,Created Class
         <Your Name>,<Today's Date>,Modified code to complete assignment 8
     """
-    pass
     # TODO: Add Code to the Product class
+    # -- Constructor --
+
+    def __init__(self, product_name, product_price):
+        # -- Attributes --
+        self.__product_name = product_name
+        self.__product_price = product_price
+        # call the private method each time an object is made
+
+    # -- Properties --
+    @property  # DON'T USE NAME for this directive!
+    def product_name(self):  # (getter or accessor)
+        return str(self.__product_name).title()  # Title case
+
+    @product_name.setter  # The NAME MUST MATCH the property!
+    def product_name(self, value):  # (setter or mutator)
+        if not str(value).isnumeric():
+            self.__product_name = value
+        else:
+            raise Exception("Product names cannot be numbers")
+
+    @property  # DON'T USE NAME for this directive!
+    def product_price(self):  # (getter or accessor)
+        return float(self.product_price)
+
+    @product_price.setter  # The NAME MUST MATCH the property!
+    def product_price(self, value):  # (setter or mutator)
+        if str(value).isnumeric():
+            self.__product_price = value
+        else:
+            raise Exception("Please enter a price in dollars")
+
+    # -- Methods --
+    def __str__(self):
+        return self.product_name + ',' + self.product_price
+
+    def __doc__(self):
+        return 'This class holds product data'
 # Data -------------------------------------------------------------------- #
 # Declare variables and constants
 objFile = None   # An object that represents a file
@@ -81,7 +117,7 @@ class FileProcessor:
 
     # TODO: Add Code to process data to a file
     @staticmethod
-    def write_data_to_file(file_name, list_of_rows):
+    def save_data_to_file(file_name, list_of_rows):
         """
         Writes data in memory into a file
         :param file_name: the file name as a string:
@@ -99,8 +135,9 @@ class FileProcessor:
 # Presentation (Input/Output)  -------------------------------------------- #
 class IO:
     # TODO: Add docstring
-    pass
+
     # TODO: Add code to show menu to user
+
     @staticmethod  # 2 this shows the menu
     def print_menu_products():
         """  Display a menu of choices to the user
@@ -117,7 +154,7 @@ class IO:
         print()  # Add an extra line for looks
 
     # TODO: Add code to get user's choice
-    @staticmethod # 3 this lets you choose a menu item
+    @staticmethod  # this lets you choose a menu item
     def input_menu_choice():
         """ Gets the menu choice from a user
 
@@ -151,10 +188,10 @@ class IO:
         :param list_of_rows: (list) of rows you want to display
         :return: nothing
         """
-        print("******* The current Products ToDo are: *******")
+        print("******* The current Products and Prices are: *******")
         for row in list_of_rows:
-            print(row["Product"] + " (" + row["Price"] + ")")
-        print("*******************************************")
+            print(row["Product"] + " $" + row["Price"])
+        print("****************************************************")
         print()  # Add an extra line for looks
 
     # TODO: Add code to get product data from user
@@ -165,7 +202,7 @@ class IO:
         :return: product and price strings from user input
         """
         product = input('Product: ')
-        price = input('Price: ')
+        price = input('Price: $')
         return product, price
 # Presentation (Input/Output)  -------------------------------------------- #
 
@@ -202,7 +239,7 @@ while (True):
     elif strChoice == '3':  # Save Data to File
         strChoice = IO.input_yes_no_choice("Save this data to file? (y/n) - ")
         if strChoice.lower() == "y":
-            FileProcessor.write_data_to_file('products.txt', lstTable)
+            FileProcessor.save_data_to_file('products.txt', lstTable)
             IO.input_press_to_continue(strStatus)
         else:
             IO.input_press_to_continue("Save Cancelled!")
