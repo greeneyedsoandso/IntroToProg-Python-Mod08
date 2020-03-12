@@ -29,11 +29,11 @@ class Product:
 # Data -------------------------------------------------------------------- #
 # Declare variables and constants
 objFile = None   # An object that represents a file
-dicRow = {}  # A row of data separated into elements of a dictionary {Task,Priority}
+dicRow = {}  # A row of data separated into elements of a dictionary {Product,Price}
 lstTable = []  # A list that acts as a 'table' of rows
 strChoice = ""  # Captures the user option selection
-strTask = ""  # Captures the user task data
-strPriority = ""  # Captures the user priority data
+strProduct = ""  # Captures the user product data
+strPrice = ""  # Captures the user price data
 strStatus = ""  # Captures the status of an processing functions
 # Processing  ------------------------------------------------------------- #
 class FileProcessor:
@@ -61,22 +61,22 @@ class FileProcessor:
         list_of_rows.clear()  # clear current data
         file = open(file_name, "r")
         for line in file:
-            task, priority = line.split(",")
-            row = {"Task": task.strip(), "Priority": priority.strip()}
+            product, price = line.split(",")
+            row = {"Product": product.strip(), "Price": price.strip()}
             list_of_rows.append(row)
         file.close()
 
     @staticmethod  # 5
-    def add_data_to_list(task, priority, list_of_rows):
+    def add_data_to_list(product, price, list_of_rows):
         """
         Appends rows to the list of dictionary rows
-        :param task: value for key Task:
-        :param priority: value for key Priority:
+        :param product: value for key Product:
+        :param price: value for key Price:
         :param list_of_rows: list where data should go:
         :return: rows in list, success message:
         """
         # TODO: Add Code Here!
-        list_of_rows.append({'Task': task, 'Priority': priority})
+        list_of_rows.append({'Product': product, 'Price': price})
         return list_of_rows, 'Success'
 
     # TODO: Add Code to process data to a file
@@ -90,7 +90,7 @@ class FileProcessor:
         """
         file = open(file_name, 'w')
         for row in lstTable:
-            file.write(str(row['Task'] + ',' + str(row['Priority'] + '\n')))
+            file.write(str(row['Product'] + ',' + str(row['Price'] + '\n')))
         file.close()
         return list_of_rows, 'Success'
 
@@ -102,18 +102,17 @@ class IO:
     pass
     # TODO: Add code to show menu to user
     @staticmethod  # 2 this shows the menu
-    def print_menu_tasks():
+    def print_menu_products():
         """  Display a menu of choices to the user
 
         :return: nothing
         """
         print('''
             Menu of Options
-            1) Add a new Task
-            2) Remove an existing Task
-            3) Save Data to File        
-            4) Reload Data from File
-            5) Exit Program
+            1) Add new product and list price
+            2) Review current product list
+            3) Save list to file    
+            4) Exit 
             ''')
         print()  # Add an extra line for looks
 
@@ -124,7 +123,7 @@ class IO:
 
         :return: string
         """
-        choice = str(input("Which option would you like to perform? [1 to 5] - ")).strip()
+        choice = str(input("What would you like to do? [1 to 4] - ")).strip()
         print()  # Add an extra line for looks
         return choice
     @staticmethod
@@ -146,28 +145,28 @@ class IO:
         input('Press the [Enter] key to continue.')
     # TODO: Add code to show the current data from the file to user
     @staticmethod  # 1 this is the stuff in the dictionary rows that are loaded in memory
-    def print_current_tasks_in_list(list_of_rows):
-        """ Shows the current Tasks in the list of dictionaries rows
+    def print_current_products_in_list(list_of_rows):
+        """ Shows the current Products in the list of dictionaries rows
 
         :param list_of_rows: (list) of rows you want to display
         :return: nothing
         """
-        print("******* The current Tasks ToDo are: *******")
+        print("******* The current Products ToDo are: *******")
         for row in list_of_rows:
-            print(row["Task"] + " (" + row["Priority"] + ")")
+            print(row["Product"] + " (" + row["Price"] + ")")
         print("*******************************************")
         print()  # Add an extra line for looks
 
     # TODO: Add code to get product data from user
     @staticmethod  # 4
-    def input_new_task_and_priority():
+    def input_new_product_and_price():
         """
-        Gets new Task and Priority from user
-        :return: task and priority strings from user input
+        Gets new Product and Price from user
+        :return: product and price strings from user input
         """
-        task = input('Task: ')
-        priority = input('Priority: ')
-        return task, priority
+        product = input('Product: ')
+        price = input('Price: ')
+        return product, price
 # Presentation (Input/Output)  -------------------------------------------- #
 
 # Main Body of Script  ---------------------------------------------------- #
@@ -186,21 +185,18 @@ FileProcessor.read_data_from_file(strFileName, lstTable)  # read file data
 # Show user a menu of options
 while (True):
     # Step 3 Show current data
-    IO.print_current_tasks_in_list(lstTable)  # Show current data in the list/table
-    IO.print_menu_tasks()  # Shows menu
+    IO.print_menu_products()  # Shows menu
     strChoice = IO.input_menu_choice()  # Get menu option
 
     # Step 4 - Process user's menu choice
-    if strChoice.strip() == '1':  # Add a new Task
-        strTask, strPriority = IO.input_new_task_and_priority()
-        FileProcessor.add_data_to_list(strTask, strPriority, lstTable)
+    if strChoice.strip() == '1':  # Add a new item
+        strProduct, strPrice = IO.input_new_product_and_price()
+        FileProcessor.add_data_to_list(strProduct, strPrice, lstTable)
         IO.input_press_to_continue(strStatus)
         continue  # to show the menu
 
-    elif strChoice == '2':  # Remove an existing Task
-        strTask = IO.input_task_to_remove()
-        FileProcessor.remove_data_from_list(strTask, lstTable)
-        IO.input_press_to_continue(strStatus)
+    elif strChoice == '2':  # Review list
+        IO.print_current_products_in_list(lstTable)  # Show current data in the list/table
         continue  # to show the menu
 
     elif strChoice == '3':  # Save Data to File
@@ -212,6 +208,6 @@ while (True):
             IO.input_press_to_continue("Save Cancelled!")
         continue  # to show the menu
 
-    elif strChoice == '5':  # Exit Program
+    elif strChoice == '4':  # Exit Program
         print("Goodbye!")
         break  # and Exit
