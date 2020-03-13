@@ -11,7 +11,7 @@
 # Data -------------------------------------------------------------------- #
 strFileName = 'products.txt'
 lstOfProductObjects = []
-
+strStatus = ""
 
 class Product:
     """Stores data about a product:
@@ -62,6 +62,9 @@ class Product:
 
     def __doc__(self):
         return 'This class holds product data'
+    @staticmethod
+    def build_list(product_name, product_price):
+        return [product_name, product_price]
 # Data -------------------------------------------------------------------- #
 
 # Processing  ------------------------------------------------------------- #
@@ -121,8 +124,8 @@ class IO:
         """
         print('''
             Menu of Options
-            1) Add new product and list price
-            2) Review current product list
+            1) Review current product list
+            2) Add new product and list price
             3) Save list to file    
             4) Exit 
             ''')
@@ -197,9 +200,26 @@ class IO:
 # Main Body of Script  ---------------------------------------------------- #
 
 
-# FileProcessor.read_data_from_file(strFileName, lstOfProductObjects)  # read file data
-objP1 = IO.input_new_product_and_price()
-objP2 = Product("sunscreen", "5")
-lstOfProductObjects = [objP1.__str__(), objP2.__str__()]
-IO.print_current_products_in_list(lstOfProductObjects)
+FileProcessor.read_data_from_file(strFileName, lstOfProductObjects)  # read file data
+while True:
+    IO.print_menu_products()  # Shows menu
+    strChoice = IO.input_menu_choice()  # Get menu option
+    if strChoice.strip() == '1':  # Show current list
+        # IO.print_current_products_in_list(lstOfProductObjects)
+        IO.print_current_products_in_list(lstOfProductObjects)# Show current data in the list/table
+        continue  # to show the menu
+    elif strChoice.strip() == '2':  # Add a new item
+        strProduct, strPrice = IO.input_new_product_and_price()
+        objP1 = Product(strProduct, strPrice)
+        lstOfProductObjects.append(objP1.__str__())
+        IO.input_press_to_continue(strStatus)
+        continue  # to show the menu
+    elif strChoice.strip() == '3':
+        continue
+    elif strChoice.strip() == '4':
+        break
+# objP1 = IO.input_new_product_and_price()
+# objP2 = Product("sunscreen", "5")
+# lstOfProductObjects = [objP1.__str__(), objP2.__str__()]
+# IO.print_current_products_in_list(lstOfProductObjects)
 
