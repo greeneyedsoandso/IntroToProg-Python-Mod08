@@ -12,7 +12,7 @@
 strFileName = 'products.txt'
 lstOfProductObjects = []
 strStatus = ""
-
+lstTable = []  # A list that acts as a 'table' of rows
 class Product:
     """Stores data about a product:
 
@@ -92,22 +92,25 @@ class FileProcessor:
         # list_of_rows.clear()  # clear current data
         file = open(file_name, "r")
         for line in file:
-            product, price = line.split(",")
-            row = {"Product": product.strip(), "Price": price.strip()}
+            p = line.split(",")
+            product = p[0]
+            price = p[1]
+            row = [product, price]
             list_of_rows.append(row)
+            return list_of_rows
         file.close()
     # TODO: Add Code to process data to a file
-
-    def save_data_to_file(self, file_name, list_of_product_objects):
+    @staticmethod
+    def save_data_to_file(file_name, list_of_product_objects):
         """
         Writes data in memory into a file
         :param file_name: the file name as a string:
         :param list_of_product_objects: objects:
         :return: current contents:
         """
-        file = open(file_name, 'w')
-        for row in lstTable:
-            file.write(str(row) + '\n')
+        file = open(file_name, 'a')
+        for row in list_of_product_objects:
+            file.write(str(row + '\n'))           # file.write(str(row['Task'] + ',' + str(row['Priority'] + '\n')))
         file.close()
         return list_of_product_objects, 'Success'
 # Processing  ------------------------------------------------------------- #
@@ -200,13 +203,13 @@ class IO:
 # Main Body of Script  ---------------------------------------------------- #
 
 
-FileProcessor.read_data_from_file(strFileName, lstOfProductObjects)  # read file data
+# FileProcessor.read_data_from_file(strFileName, lstOfProductObjects)  # read file data
 while True:
     IO.print_menu_products()  # Shows menu
     strChoice = IO.input_menu_choice()  # Get menu option
     if strChoice.strip() == '1':  # Show current list
         # IO.print_current_products_in_list(lstOfProductObjects)
-        IO.print_current_products_in_list(lstOfProductObjects)# Show current data in the list/table
+        IO.print_current_products_in_list(lstOfProductObjects) # Show current data in the list/table
         continue  # to show the menu
     elif strChoice.strip() == '2':  # Add a new item
         strProduct, strPrice = IO.input_new_product_and_price()
@@ -215,7 +218,13 @@ while True:
         IO.input_press_to_continue(strStatus)
         continue  # to show the menu
     elif strChoice.strip() == '3':
-        continue
+        strChoice = IO.input_yes_no_choice("Save this data to file? (y/n) - ")
+        if strChoice.lower() == "y":
+           FileProcessor.save_data_to_file(strFileName, lstOfProductObjects)
+           IO.input_press_to_continue(strStatus)
+        else:
+            IO.input_press_to_continue("Save Cancelled!")
+        continue  # to show the menu
     elif strChoice.strip() == '4':
         break
 # objP1 = IO.input_new_product_and_price()
