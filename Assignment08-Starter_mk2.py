@@ -25,6 +25,30 @@ class Product:
         RRoot,1.1.2030,Created Class
         JDSmith,3.14.2020,Threw out a week of work and started over
     """
+    # -- Properties --
+    @property  # DON'T USE NAME for this directive!
+    def product_name(self):  # (getter or accessor)
+        return str(self.__product_name)
+
+    @product_name.setter  # The NAME MUST MATCH the property!
+    def product_name(self, value):  # (setter or mutator)
+        if not str(value).isnumeric():
+            self.__product_name = value
+        else:
+            raise Exception("Product names cannot be numbers")
+
+    @property  # DON'T USE NAME for this directive!
+    def product_price(self):  # (getter or accessor)
+        return str(self.__product_price)
+
+    @product_price.setter  # The NAME MUST MATCH the property!
+    def product_price(self, value):  # (setter or mutator)
+        if str(value).isnumeric():
+            self.__product_price = value
+        else:
+            raise Exception("Please enter a price in dollars")
+
+    # methods
     def __init__(self, product_name, product_price):
         # -- Attributes --
         self.product_name = product_name
@@ -187,8 +211,11 @@ while True:
         IO.print_current_products_in_list(lstOfProductObjects) # Show current data in the list/table
         continue  # to show the menu
     elif strChoice.strip() == '2':  # Add a new item
-        prod_price = IO.input_new_product_and_price(lstOfProductObjects)
-        IO.input_press_to_continue(strStatus)
+        try:
+            prod_price = IO.input_new_product_and_price(lstOfProductObjects)
+            IO.input_press_to_continue(strStatus)
+        except Exception as e:
+            print(str(e))
         continue  # to show the menu
     elif strChoice.strip() == '3':
         strChoice = IO.input_yes_no_choice("Save this data to file? (y/n) - ")
