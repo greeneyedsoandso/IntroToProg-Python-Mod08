@@ -22,6 +22,9 @@ class Product:
         product_name: (string) with the products's  name
         product_price: (float) with the products's standard price
     methods:
+        __init__: sets attributes as product name and product price
+        __str__: -> attributes as comma separated values
+        pretty: -> formats attributes for display
     changelog: (When,Who,What)
         RRoot,1.1.2030,Created Class
         JDSmith,3.14.2020,Threw out a week of work and started over
@@ -36,7 +39,7 @@ class Product:
         if not str(value).isnumeric():
             self.__product_name = value
         else:
-            raise Exception("Product names cannot be numbers")
+            raise Exception("Product names cannot be numbers. Please try again.")
 
     @property  # DON'T USE NAME for this directive!
     def product_price(self):  # (getter or accessor)
@@ -47,7 +50,7 @@ class Product:
         if str(value).isnumeric():
             self.__product_price = value
         else:
-            raise Exception("Please enter a price in dollars")
+            raise Exception("Price must be in dollars. Please try again.")
 
     # methods
     def __init__(self, product_name, product_price):
@@ -103,7 +106,7 @@ class FileProcessor:
         for row in list_of_product_objects:
             file.write(str(f'{row}\n'))
         file.close()
-        return list_of_product_objects, 'Success'
+        return list_of_product_objects
 # Processing  ------------------------------------------------------------- #
 
 
@@ -137,7 +140,6 @@ class IO:
             ''')
         print()  # Add an extra line for looks
 
-    # TODO: Add code to get user's choice
     @staticmethod  # this lets you choose a menu item
     def input_menu_choice():
         """ Gets the menu choice from a user
@@ -208,7 +210,6 @@ while True:
     IO.print_menu_products()  # Shows menu
     strChoice = IO.input_menu_choice()  # Get menu option
     if strChoice.strip() == '1':  # Show current list
-        # IO.print_current_products_in_list(lstOfProductObjects)
         IO.print_current_products_in_list(lstOfProductObjects) # Show current data in the list/table
         continue  # to show the menu
     elif strChoice.strip() == '2':  # Add a new item
