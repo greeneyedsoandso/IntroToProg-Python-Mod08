@@ -31,9 +31,11 @@ class Product:
         self.product_price = product_price
 
     def __str__(self):
-        return self.product_name + ', ' + '$' + self.product_price
+        return self.product_name + ',' + self.product_price
 
-    # TODO: Add Code to the Product class
+    def pretty(self):
+        return self.product_name + ', $' + self.product_price
+
 # Data -------------------------------------------------------------------- #
 
 
@@ -74,7 +76,7 @@ class FileProcessor:
         """
         file = open(file_name, 'w')
         for row in list_of_product_objects:
-            file.write(str(row[0] + ',' + str(row[1])))
+            file.write(str(f'{row}\n'))
         file.close()
         return list_of_product_objects, 'Success'
 # Processing  ------------------------------------------------------------- #
@@ -147,6 +149,7 @@ class IO:
         """
         print("******* The current Products and Prices are: *******")
         for row in list_of_rows:
+            row = Product.pretty(row)
             print(row)
         print("****************************************************")
 
@@ -158,8 +161,8 @@ class IO:
         """
         product = input('Product: ')
         price = input('Price: $')
-        objL1 = Product(product, price)
-        list_data.append(objL1)
+        obj_list = Product(product, price)
+        list_data.append(obj_list)
         return list_data
 
 # Presentation (Input/Output)  -------------------------------------------- #
@@ -184,14 +187,14 @@ while True:
         IO.print_current_products_in_list(lstOfProductObjects) # Show current data in the list/table
         continue  # to show the menu
     elif strChoice.strip() == '2':  # Add a new item
-        strProduct, strPrice = IO.input_new_product_and_price(lstOfProductObjects)
+        prod_price = IO.input_new_product_and_price(lstOfProductObjects)
         IO.input_press_to_continue(strStatus)
         continue  # to show the menu
     elif strChoice.strip() == '3':
         strChoice = IO.input_yes_no_choice("Save this data to file? (y/n) - ")
         if strChoice.lower() == "y":
-           FileProcessor.save_data_to_file(strFileName, lstOfProductObjects)
-           IO.input_press_to_continue(strStatus)
+            FileProcessor.save_data_to_file(strFileName, lstOfProductObjects)
+            IO.input_press_to_continue(strStatus)
         else:
             IO.input_press_to_continue("Save Cancelled!")
         continue  # to show the menu
