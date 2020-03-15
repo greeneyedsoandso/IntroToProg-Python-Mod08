@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # ------------------------------------------------------------------------ #
 # Title: Assignment 08
 # Description: Working with classes
