@@ -25,7 +25,14 @@ class Product:
         RRoot,1.1.2030,Created Class
         JDSmith,3.14.2020,Threw out a week of work and started over
     """
-    pass
+    def __init__(self, product_name, product_price):
+        # -- Attributes --
+        self.product_name = product_name
+        self.product_price = product_price
+
+    def __str__(self):
+        return self.product_name + ', ' + '$' + self.product_price
+
     # TODO: Add Code to the Product class
 # Data -------------------------------------------------------------------- #
 
@@ -49,15 +56,13 @@ class FileProcessor:
         :param file_name: (string) with name of file:
         :return: (list) of rows:
         """
-        # list_of_rows = []
+        list_rows = []
         file = open(file_name, 'r')
-        list_of_rows = []
         for line in file:
-            i, v = line.split(',')
-            list_row = [i, v]
-            list_of_rows.append(list_row)
+            i = line.strip().split(',')
+            list_rows.append(Product(i[0], i[1]))
+            return list_rows
         file.close()
-        return list_of_rows
 
     @staticmethod
     def save_data_to_file(file_name, list_of_product_objects):
@@ -142,8 +147,8 @@ class IO:
         """
         print("******* The current Products and Prices are: *******")
         for row in list_of_rows:
-            print(str(row[0] + ', ' + '$' + row[1].strip()))
-        print('-' * 55)  # a divider before the menu displays again
+            print(row)
+        print("****************************************************")
 
     def input_new_product_and_price():
         """
