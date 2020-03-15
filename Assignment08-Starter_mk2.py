@@ -150,14 +150,17 @@ class IO:
             print(row)
         print("****************************************************")
 
-    def input_new_product_and_price():
+    @staticmethod
+    def input_new_product_and_price(list_data):
         """
         Gets new Product and Price from user
         :return: product and price strings from user input
         """
         product = input('Product: ')
         price = input('Price: $')
-        return product, price
+        objL1 = Product(product, price)
+        list_data.append(objL1)
+        return list_data
 
 # Presentation (Input/Output)  -------------------------------------------- #
 
@@ -181,9 +184,7 @@ while True:
         IO.print_current_products_in_list(lstOfProductObjects) # Show current data in the list/table
         continue  # to show the menu
     elif strChoice.strip() == '2':  # Add a new item
-        strProduct, strPrice = IO.input_new_product_and_price()
-        objP1 = [strProduct, strPrice]
-        lstOfProductObjects.append(objP1)
+        strProduct, strPrice = IO.input_new_product_and_price(lstOfProductObjects)
         IO.input_press_to_continue(strStatus)
         continue  # to show the menu
     elif strChoice.strip() == '3':
