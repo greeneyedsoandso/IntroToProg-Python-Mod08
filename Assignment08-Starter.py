@@ -68,6 +68,8 @@ class Product:
 # Data -------------------------------------------------------------------- #
 
 # Processing  ------------------------------------------------------------- #
+
+
 class FileProcessor:
     """Processes data to and from a file and a list of product objects:
 
@@ -82,22 +84,17 @@ class FileProcessor:
     """
     # TODO: Add Code to process data from a file
     @staticmethod
-    def read_data_from_file(file_name, list_of_rows):
+    def read_data_from_file(file_name):
         """ Reads data from a file into a list of dictionary rows
-
         :param file_name: (string) with name of file:
-        :param list_of_rows: (list) you want filled with file data:
-        :return: (list) of dictionary rows:
+        :return: (list) of rows:
         """
-        # list_of_rows.clear()  # clear current data
-        file = open(file_name, "r")
+        list_of_rows = []
+        file = open(file_name, "r+")
         for line in file:
-            p = line.split(",")
-            product = p[0]
-            price = p[1]
-            row = [product, price]
-            list_of_rows.append(row)
-            return list_of_rows
+            p = line.strip().split(",")
+            list_of_rows.append(Product(p[0], p[1]))
+            return p
         file.close()
     # TODO: Add Code to process data to a file
     @staticmethod
@@ -110,7 +107,7 @@ class FileProcessor:
         """
         file = open(file_name, 'a')
         for row in list_of_product_objects:
-            file.write(str(row + '\n'))           # file.write(str(row['Task'] + ',' + str(row['Priority'] + '\n')))
+            file.write(str(row) + '\n')
         file.close()
         return list_of_product_objects, 'Success'
 # Processing  ------------------------------------------------------------- #
@@ -203,7 +200,8 @@ class IO:
 # Main Body of Script  ---------------------------------------------------- #
 
 
-# FileProcessor.read_data_from_file(strFileName, lstOfProductObjects)  # read file data
+lstOfProductObjects = FileProcessor.read_data_from_file(strFileName)  # read file data
+
 while True:
     IO.print_menu_products()  # Shows menu
     strChoice = IO.input_menu_choice()  # Get menu option
@@ -227,8 +225,6 @@ while True:
         continue  # to show the menu
     elif strChoice.strip() == '4':
         break
-# objP1 = IO.input_new_product_and_price()
-# objP2 = Product("sunscreen", "5")
-# lstOfProductObjects = [objP1.__str__(), objP2.__str__()]
-# IO.print_current_products_in_list(lstOfProductObjects)
+
+
 
