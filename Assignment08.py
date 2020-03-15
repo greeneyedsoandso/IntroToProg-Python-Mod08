@@ -7,6 +7,7 @@
 # RRoot,1.1.2030,Created started script
 # RRoot,1.1.2030,Added pseudo-code to start assignment 8
 # JDSmith,3.14.2020,Threw out a week of work and started over
+# JDSmith,3.15.202,Docstrings and cosmetic changes
 # ------------------------------------------------------------------------ #
 
 # Data -------------------------------------------------------------------- #
@@ -167,7 +168,6 @@ class IO:
         """
         print(optional_message)
 
-    # TODO: Add code to show the current data from the file to user
     @staticmethod  # this is the stuff loaded in memory
     def print_current_products_in_list(list_of_rows):
         """ Shows the current Products in the list of rows
